@@ -110,7 +110,12 @@ def verify_decode_jwt(token):
                 'e': key['e']
             }
     
-    if rsa_key:
+    if not rsa_key:
+        raise AuthError({
+            'code': 'invalid_header',
+            'description': 'Unable to find the appropriate key.'
+        }, 400)
+    else:
         try:
             payload = jwt.decode(
                 token,
@@ -120,30 +125,28 @@ def verify_decode_jwt(token):
                 audience=API_AUDIENCE,
                 issuer='https://' + AUTH0_DOMAIN + '/'
             )
-            return payload
-        
+            
         except jwt.ExpiredSignatureError:
             raise AuthError({
                 'code': 'token_expired',
                 'description': 'Token expired.'
             }, 401)
-
+            
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
                 'description': 'Incorrect claims. Please, check the audience and issuer.'
             }, 401)
             
+        # catch the rest of exceptions 
         except Exception:
             raise AuthError({
                 'code': 'invalid_header',
                 'description': 'Unable to parse authentication token.'
             }, 400)
-            
-    raise AuthError({
-                'code': 'invalid_header',
-                'description': 'Unable to find the appropriate key.'
-            }, 400)
+        
+        return payload
+
 
 '''
 @TODO implement @requires_auth(permission) decorator method
