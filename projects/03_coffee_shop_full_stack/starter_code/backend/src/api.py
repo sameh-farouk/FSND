@@ -67,8 +67,21 @@ def drinks_detail():
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
-
-
+@app.route('/drinks', methods=['POST'])
+@requires_auth('post:drinks')
+def create_drink():
+    title = request.json.get('title', None)
+    recipe = request.json.get('recipe', None)
+    if not title or not recipe:
+        abort(422)
+    new_drink = Drink(title, recipe)
+    new_drink.insert()
+    drinks_long = [new_drink.long()]
+    return jsonify({
+        "success": True,
+        "drinks": drinks_long
+    }) 
+    
 '''
 @TODO implement endpoint
     PATCH /drinks/<id>
