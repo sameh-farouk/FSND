@@ -40,7 +40,7 @@ def get_token_auth_header():
    if 'Authorization' not in request.headers:
        raise AuthError({
             'code': 'no_authorization_header',
-            'description': 'no authorization header is present.'
+            'description': 'No authorization header is present.'
         }, 401)
     auth_header = request.headers['Authorization']
     headers_parts = auth_header.split(' ')
