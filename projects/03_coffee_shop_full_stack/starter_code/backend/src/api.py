@@ -155,9 +155,9 @@ def not_found(error):
     error handler should conform to general task above 
 '''
 @app.errorhandler(AuthError)
-def auth_error(err):
+def auth_error(error):
     return jsonify({
                     "success": False, 
-                    "error": err.status_code,
-                    "message": err.error['description']
-                    }), err.status_code
+                    "error": error.status_code,
+                    "message": error.error['description']
+                    }), error.status_code
