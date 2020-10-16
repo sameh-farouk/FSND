@@ -10,9 +10,9 @@ ALGORITHMS = ['RS256']
 API_AUDIENCE = 'drinks'
 # config dict to extended jwt decoding and validation options
 JWT_VALIDATION_CONFIG = {
-    require_exp:True,
-    verify_aud=True,
-    verify_iss=True
+    'require_exp': True,
+    'verify_aud': True,
+    'verify_iss': True
 }
 
 ## AuthError Exception
@@ -37,8 +37,8 @@ class AuthError(Exception):
     return the token part of the header
 '''
 def get_token_auth_header():
-   if 'Authorization' not in request.headers:
-       raise AuthError({
+    if 'Authorization' not in request.headers:
+        raise AuthError({
             'code': 'no_authorization_header',
             'description': 'No authorization header is present.'
         }, 401)
