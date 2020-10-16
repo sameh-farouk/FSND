@@ -44,7 +44,8 @@ def get_token_auth_header():
         }, 401)
     auth_header = request.headers['Authorization']
     headers_parts = auth_header.split(' ')
-    if headers_parts != 2 or headers_parts[0].lower() != 'bearer':
+    if len(headers_parts) != 2 or headers_parts[0].lower() != 'bearer':
+        print(headers_parts)
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization malformed.'
