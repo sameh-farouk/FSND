@@ -74,7 +74,7 @@ def create_drink(payload):
     recipe = request.json.get('recipe', None)
     if not title or not recipe:
         abort(422)
-    new_drink = Drink(title, recipe)
+    new_drink = Drink(title=title, recipe=json.dumps(recipe))
     new_drink.insert()
     drinks_long = [new_drink.long()]
     return jsonify({
