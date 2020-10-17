@@ -50,7 +50,7 @@ def drinks():
 '''
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
-def drinks_detail():
+def drinks_detail(payload):
     drinks = Drink.query.all()
     drinks_long = [drink.long() for drink in drinks]
     return jsonify({
@@ -69,7 +69,7 @@ def drinks_detail():
 '''
 @app.route('/drinks', methods=['POST'])
 @requires_auth('post:drinks')
-def create_drink():
+def create_drink(payload):
     title = request.json.get('title', None)
     recipe = request.json.get('recipe', None)
     if not title or not recipe:
@@ -107,7 +107,7 @@ def create_drink():
 '''
 @app.route('/drinks/<int:drink_id>', methods=['DELETE'])
 @requires_auth('delete:drinks')
-def del_drink(drink_id):
+def del_drink(payload, drink_id):
     drink = Drink.query.get_or_404(drink_id)
     drink.delete()
     return jsonify({
